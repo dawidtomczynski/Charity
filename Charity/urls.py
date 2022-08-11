@@ -20,8 +20,9 @@ from Donation import views as v
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', v.BaseView.as_view(), name='main'),
-    path('login/', v.LoginView.as_view(), name='login'),
     path('register/', v.RegisterView.as_view(), name='register'),
+    path('login/', v.LoginView.as_view(), name='login'),
+    path('logout/', v.LogoutView.as_view(), name='logout'),
     path('form/', v.FormView.as_view(), name='form'),
     path('formconf/', v.FormConfirmationView.as_view(), name='form-conf'),
 

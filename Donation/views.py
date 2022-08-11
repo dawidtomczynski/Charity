@@ -1,7 +1,14 @@
+import re
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import render, redirect
 from django.views import View
 from Donation import models as m
+
+
+email_regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 
 
 class BaseView(View):
@@ -33,14 +40,48 @@ class BaseView(View):
                                               'l_page_obj': l_page_obj})
 
 
+class RegisterView(View):
+    def get(self, request):
+        return render(request, 'register.html')
+
+    def post(self, request):
+        name = request.POST.get('name')
+        surname = request.POST.get('surname')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if re.search(email_regex, email):
+            if password1 == password2:
+                User.objects.create_user(
+                    first_name=name,
+                    last_name=surname,
+                    email=email,
+                    username=email,
+                    password=password1
+                )
+        return redirect('login')
+
+
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
 
+    def post(self, request):
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(username=email, password=password)
+        if user:
+            login(request, user)
+            return redirect('main')
+        else:
+            redirect('register')
 
-class RegisterView(View):
+
+class LogoutView(View):
     def get(self, request):
-        return render(request, 'register.html')
+        if request.user:
+            logout(request)
+        return redirect('main')
 
 
 class FormView(View):

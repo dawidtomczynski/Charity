@@ -3,11 +3,7 @@
 {% block body %}
     <header>
       <nav class="container container--70">
-        <ul class="nav--actions">
-          <li><a href="/login/">Zaloguj</a></li>
-          <li class="highlighted"><a href="/register/">Załóż konto</a></li>
-        </ul>
-
+        {% include 'upper_bar.html' %}
         <ul>
           <li><a href="/">Start</a></li>
           <li><a href="/#steps">O co chodzi?</a></li>
@@ -20,7 +16,7 @@
 
     <section class="login-page">
       <h2>Zaloguj się</h2>
-      <form style="text-align: center">
+      <form method="post" style="text-align: center">
         <div class="form-group">
           <input type="email" name="email" placeholder="Email" />
         &emsp;
@@ -29,37 +25,11 @@
         </div>
 
         <div class="form-group form-group--buttons">
-          <a href="/register/" class="btn btn--without-border">Załóż konto</a>
+          <a href="{% url 'register' %}" class="btn btn--without-border">Załóż konto</a>
           <button class="btn" type="submit">Zaloguj się</button> 
         </div>
+          {% csrf_token %}
       </form>
     </section>
-
-    <footer>
-        <div class="contact">
-          <h2>Skontaktuj się z nami</h2>
-          <h3>Formularz kontaktowy</h3>
-          <form>
-            <div class="form-group form-group--50">
-              <input type="text" name="name" placeholder="Imię" />
-            </div>
-            <div class="form-group form-group--50">
-              <input type="text" name="surname" placeholder="Nazwisko" />
-            </div>
-
-            <div class="form-group">
-              <textarea name="message" placeholder="Wiadomość" rows="1"></textarea>
-            </div>
-
-            <button class="btn" type="submit">Wyślij</button>
-          </form>
-        </div>
-        <div class="bottom-line">
-          <span class="bottom-line--copy">Copyright &copy; 2018</span>
-          <div class="bottom-line--icons">
-            <a href="#" class="btn btn--small"><img src="{% static '/images/icon-facebook.svg' %}" alt="FB"/></a>
-            <a href="#" class="btn btn--small"><img src="{% static '/images/icon-instagram.svg' %}" alt="IG"/></a>
-          </div>
-        </div>
-      </footer>
+{% include 'footer.html' %}
 {% endblock %}
